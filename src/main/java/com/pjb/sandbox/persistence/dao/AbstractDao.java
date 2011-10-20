@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public abstract class AbstractDao<T extends Serializable> implements Dao<T> {
 
 	private Class<T> genericType;
-	
-	@PersistenceContext
+
 	private EntityManager entityManager;
 
 	@SuppressWarnings("unchecked")
@@ -27,7 +26,8 @@ public abstract class AbstractDao<T extends Serializable> implements Dao<T> {
 		return entityManager;
 	}
 
-	protected void setEntityManager(EntityManager entityManager) {
+	@PersistenceContext
+	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
 
