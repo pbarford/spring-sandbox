@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+			   http://www.springframework.org/schema/beans 
+			   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			   http://www.springframework.org/schema/context
+    		   http://www.springframework.org/schema/context/spring-context.xsd  
+			   http://www.springframework.org/schema/jee 
+			   http://www.springframework.org/schema/jee/spring-jee-2.0.xsd
+			   http://www.springframework.org/schema/tx
+			   http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			   http://www.springframework.org/schema/aop 
+     		   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+     		   http://www.springframework.org/schema/jdbc
+               http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
+
+	<context:component-scan base-package="com.pjb.sandbox.persistence" />
+
+	<jdbc:embedded-database id="dataSource" type="H2">
+		<jdbc:script location="classpath:schema.sql" />
+	</jdbc:embedded-database>
+	
+	<bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+	</bean>
+
+	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="database" value="HSQL" />
+		<property name="showSql" value="true" />
+		<property name="generateDdl" value="false" />
+		<property name="databasePlatform" value="org.hibernate.dialect.HSQLDialect" />
+	</bean>
+
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+	<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="emf" />
+		<property name="dataSource" ref="dataSource" />
+
+	</bean>
+
+	<tx:annotation-driven transaction-manager="txManager" />
+</beans>     		  
