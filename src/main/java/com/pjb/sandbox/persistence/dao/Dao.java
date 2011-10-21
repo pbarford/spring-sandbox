@@ -7,7 +7,7 @@ public interface Dao<E extends Serializable, K extends Serializable> {
 
 	E persist(E entity);
 	E update(E entity);
-	void delete(Long id);
+	void delete(K id);
 	
 	E getById(K key);
 	Collection<E> getAll();
