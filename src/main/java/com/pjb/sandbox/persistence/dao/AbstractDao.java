@@ -11,15 +11,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(propagation=Propagation.SUPPORTS, readOnly=true)
-public abstract class AbstractDao<T extends Serializable> implements Dao<T> {
+public abstract class AbstractDao<E extends Serializable, K extends Serializable> implements Dao<E, K> {
 
-	private Class<T> genericType;
+	private Class<E> genericType;
 
 	private EntityManager entityManager;
 
 	@SuppressWarnings("unchecked")
 	public AbstractDao() {
-		this.genericType = ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+		this.genericType = ((Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
 	}
 	
 	protected EntityManager getEntityManager() {
@@ -31,37 +31,33 @@ public abstract class AbstractDao<T extends Serializable> implements Dao<T> {
 		this.entityManager = entityManager;
 	}
 
-	protected Class<T> getGenericType() {
+	protected Class<E> getGenericType() {
 		return genericType;
-	}
-
-	protected void setGenericType(Class<T> genericType) {
-		this.genericType = genericType;
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public T persist(T entity) {	
+	public E persist(E entity) {	
 		getEntityManager().persist(entity);
 		return entity;
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public T update(T entity) {	
+	public E update(E entity) {	
 		return getEntityManager().merge(entity);
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public void delete(Long id) {
-		T entity = getById(id);
+	public void delete(K id) {
+		E entity = getById(id);
 		getEntityManager().remove(entity);
 	}
 	
-	public T getById(Long id) {
+	public E getById(K id) {
 		return getEntityManager().find(getGenericType(), id);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<T> getAll() {
+	public Collection<E> getAll() {
 		return getEntityManager().createQuery("from " + getGenericType().getSimpleName()).getResultList();
 	}
 

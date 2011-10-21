@@ -4,6 +4,7 @@
 	version="1.0">
 	<persistence-unit name="sandboxPU" transaction-type="RESOURCE_LOCAL">
 		<class>com.pjb.sandbox.persistence.model.User</class>
+		<class>com.pjb.sandbox.persistence.model.Event</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"></property>            
 			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>

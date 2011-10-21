@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import com.pjb.sandbox.persistence.model.User;
 
 @Repository("userDao")
-public class DefaultUserDao extends AbstractDao<User> implements UserDao {
+public class DefaultUserDao extends AbstractDao<User, Long> implements UserDao {
 }
