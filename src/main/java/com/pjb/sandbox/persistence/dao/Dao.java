@@ -11,4 +11,7 @@ public interface Dao<E extends Serializable, K extends Serializable> {
 	
 	E getById(K key);
 	Collection<E> getAll();
+	
+	Collection<E> query(String sql, Object ...args);
+	Collection<E> query(String sql);
 }

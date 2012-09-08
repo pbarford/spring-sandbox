@@ -30,7 +30,7 @@ public class Event implements Serializable {
 		this.id = id;
 	}
 
-	@Column
+	@Column(name="desc")
 	public String getDescription() {
 		return description;
 	}
@@ -38,6 +38,4 @@ public class Event implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-
 }

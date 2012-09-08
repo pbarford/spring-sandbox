@@ -1,5 +1,16 @@
 package com.pjb.sandbox.persistence;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,46 +32,49 @@ public class PersistenceTest {
 	@Autowired
 	private EventDao eventDao;
 	
-	@Test
-	public void testAddUser() {
+	
+	private void createUser(String name, Integer age) {
 		User u = new User();
-		u.setName("Paulo");
-		u.setAge(21);
-		u = userDao.persist(u);
-		
-		System.out.println(u.getId() + ":" + u.getVersion());
-		u.setName("Billy");
-		u = userDao.update(u);
-		System.out.println(u.getId() + ":" + u.getVersion());
-		
-		User u2 = new User();
-		u2.setName("Paulo");
-		u2.setAge(21);
-		u2 = userDao.persist(u2);
-		
-		System.out.println(u2.getId());
-		
-		User u3 = userDao.getById(Long.valueOf(1));
-		System.out.println(u3.getId() + ":" + u3.getVersion());
-		
-		System.out.println(userDao.getAll().size());
-		
-		userDao.delete(Long.valueOf(1));
-		
-		System.out.println(userDao.getAll().size());
+		u.setName(name);
+		u.setAge(age);
+		userDao.persist(u);
+	}
+	
+	private void createEvent(String desc) {
+		Event e = new Event();
+		e.setDescription(desc);
+		eventDao.persist(e);
 	}
 	
 	@Test
-	public void testAddEvent() {
-		Event e = new Event();
-		e.setDescription("test");
-		e = eventDao.persist(e);
-		System.out.printf("id : %s%n", e.getId());
+	public void testUser() {
 		
-		Event v = new Event();
-		v.setDescription("test");
-		v = eventDao.persist(v);
-		System.out.printf("id : %s%n", v.getId());
+		createUser("paulo", 38);
+		createUser("anita", 41);
+		createUser("alexandra", 6);
 		
+		User u = userDao.getById(Long.valueOf(1));
+		assertThat(u.getVersion(), equalTo(Long.valueOf(0)));
+		u.setName("Paulo");
+		u = userDao.update(u);
+		assertThat(u.getVersion(), equalTo(Long.valueOf(1)));
+		
+		assertThat(userDao.getAll().size(), equalTo(3));
+		
+		List<Long> ids = Arrays.asList(Long.valueOf(1), Long.valueOf(2));
+		Collection<User> res = userDao.query("from User u where u.id in (?1)", ids);
+		assertThat(res.size(), equalTo(2));
+	}
+	
+	@Test
+	public void testEvent() {
+		
+		createEvent("event-1");
+		createEvent("test-1");
+		createEvent("test-2");
+
+		assertThat(eventDao.getAll().size(), equalTo(3));
+		Collection<Event> res = eventDao.query("from Event e where e.description like ?1", "test%");
+		assertThat(res.size(), equalTo(2));
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,8 +49,28 @@ public abstract class AbstractDao<E extends Serializable, K extends Serializable
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void delete(K id) {
-		E entity = getById(id);
+		E entity = getById(id);		
 		getEntityManager().remove(entity);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<E> query(String sql, Object ...params) {
+		
+		Query q = getEntityManager().createQuery(sql);
+		
+		//TypedQuery<E> q = getEntityManager().createQuery(sql, getGenericType());
+		
+		for(int i=0; i < params.length; i++) {
+			q.setParameter(i+1, params[i]);
+		}
+		return q.getResultList();		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<E> query(String sql) {
+		
+		Query q = getEntityManager().createQuery(sql);		
+		return q.getResultList();		
 	}
 	
 	public E getById(K id) {
