@@ -50,7 +50,7 @@ public class EventDestination implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "event_id", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name = "event_id", nullable=false, insertable=true, updatable=true)
 	public Event getEvent() {
 		return event;
 	}
