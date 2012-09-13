@@ -3,6 +3,7 @@ package com.pjb.sandbox.persistence.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,6 +30,13 @@ public class Market implements Serializable {
 	private Set<MarketDestination> marketDestinations;
 	private Set<Selection> selections;
 
+	public Market() {		
+	}
+	
+	public Market(String description) {
+		this.description = description;
+	}
+	
 	@Id
 	@GeneratedValue(generator="market_seq_gen", strategy=GenerationType.SEQUENCE)
 	public Long getId() {
@@ -39,7 +47,7 @@ public class Market implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name="desc")
+	@Column(name="description")
 	public String getDescription() {
 		return description;
 	}
@@ -49,7 +57,7 @@ public class Market implements Serializable {
 	}
 	
 	@ManyToOne
-	@JoinColumn(name = "event_id", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name = "event_id", nullable=false, insertable=true, updatable=true)
 	public Event getEvent() {
 		return event;
 	}
@@ -58,7 +66,7 @@ public class Market implements Serializable {
 		this.event = event;
 	}
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy = "market")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "market", cascade=CascadeType.ALL)
 	public Set<MarketDestination> getMarketDestinations() {
 		return marketDestinations;
 	}
@@ -67,7 +75,7 @@ public class Market implements Serializable {
 		this.marketDestinations = marketDestinations;
 	}
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy = "market")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "market", cascade=CascadeType.ALL)
 	public Set<Selection> getSelections() {
 		return selections;
 	}

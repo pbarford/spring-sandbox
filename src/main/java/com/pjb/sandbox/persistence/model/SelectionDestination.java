@@ -22,6 +22,13 @@ public class SelectionDestination implements Serializable {
 	private Long id;
 	private String description;
 	private Selection selection;
+	
+	public SelectionDestination() {		
+	}
+	
+	public SelectionDestination(String description) {
+		this.description = description;
+	}
 
 	@Id
 	@GeneratedValue(generator="selection_dest_seq_gen", strategy=GenerationType.SEQUENCE)
@@ -43,7 +50,7 @@ public class SelectionDestination implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "selection_id", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name = "selection_id", nullable=false, insertable=true, updatable=true)
 	public Selection getSelection() {
 		return selection;
 	}

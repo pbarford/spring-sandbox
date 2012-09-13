@@ -3,6 +3,7 @@ package com.pjb.sandbox.persistence.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,6 +28,13 @@ public class Selection implements Serializable {
 	private Market market;
 	private Set<SelectionDestination> selectionDestinations;
 
+	public Selection() {		
+	}
+	
+	public Selection(String description) {
+		this.description = description;
+	}
+	
 	@Id
 	@GeneratedValue(generator="selection_seq_gen", strategy=GenerationType.SEQUENCE)
 	public Long getId() {
@@ -47,7 +55,7 @@ public class Selection implements Serializable {
 	}
 	
 	@ManyToOne
-	@JoinColumn(name = "market_id", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name = "market_id", nullable=false, insertable=true, updatable=true)
 	public Market getMarket() {
 		return market;
 	}
@@ -56,7 +64,7 @@ public class Selection implements Serializable {
 		this.market = market;
 	}
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy = "selection")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "selection", cascade=CascadeType.ALL)
 	public Set<SelectionDestination> getSelectionDestinations() {
 		return selectionDestinations;
 	}

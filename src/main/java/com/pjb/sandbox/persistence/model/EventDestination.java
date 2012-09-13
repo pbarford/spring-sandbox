@@ -23,6 +23,13 @@ public class EventDestination implements Serializable {
 	private String description;
 	private Event event;
 
+	public EventDestination() {		
+	}
+	
+	public EventDestination(String description) {
+		this.description = description;
+	}
+	
 	@Id
 	@GeneratedValue(generator="event_dest_seq_gen", strategy=GenerationType.SEQUENCE)
 	public Long getId() {

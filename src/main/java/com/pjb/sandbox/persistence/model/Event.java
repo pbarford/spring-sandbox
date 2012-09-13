@@ -3,6 +3,7 @@ package com.pjb.sandbox.persistence.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,6 +26,13 @@ public class Event implements Serializable {
 	
 	private Set<EventDestination> eventDestinations;
 	private Set<Market> markets;
+	
+	public Event() {
+	}
+	
+	public Event(String description) {
+		this.description = description;
+	}
 
 	@Id
 	@GeneratedValue(generator="event_seq_gen", strategy=GenerationType.SEQUENCE)
@@ -45,7 +53,7 @@ public class Event implements Serializable {
 		this.description = description;
 	}
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy = "event")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "event", cascade=CascadeType.PERSIST)
 	public Set<EventDestination> getEventDestinations() {
 		return eventDestinations;
 	}
@@ -54,7 +62,7 @@ public class Event implements Serializable {
 		this.eventDestinations = eventDestinations;
 	}
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy = "event")	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "event", cascade=CascadeType.PERSIST)	
 	public Set<Market> getMarkets() {
 		return markets;
 	}

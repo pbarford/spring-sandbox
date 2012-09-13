@@ -23,6 +23,13 @@ public class MarketDestination implements Serializable {
 	private String description;
 	private Market market;
 
+	public MarketDestination() {		
+	}
+	
+	public MarketDestination(String description) {
+		this.description = description;
+	}
+	
 	@Id
 	@GeneratedValue(generator="market_dest_seq_gen", strategy=GenerationType.SEQUENCE)
 	public Long getId() {
@@ -43,7 +50,7 @@ public class MarketDestination implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "market_id", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name = "market_id", nullable=false, insertable=true, updatable=true)
 	public Market getMarket() {
 		return market;
 	}

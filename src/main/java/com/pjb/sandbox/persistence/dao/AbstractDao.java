@@ -56,7 +56,7 @@ public abstract class AbstractDao<E extends Serializable, K extends Serializable
 	
 	@SuppressWarnings("unchecked")
 	public E querySingle(String sql, Object ...params) {
-		
+		long start = System.currentTimeMillis();
 		Query q = getEntityManager().createQuery(sql);
 		
 		//TypedQuery<E> q = getEntityManager().createQuery(sql, getGenericType());
@@ -69,6 +69,9 @@ public abstract class AbstractDao<E extends Serializable, K extends Serializable
 		}
 		catch(NoResultException nrex) {
 			return null;
+		}
+		finally {
+			System.out.println("********* query took - " + (System.currentTimeMillis() - start) + " m/s");
 		}
 	}
 
