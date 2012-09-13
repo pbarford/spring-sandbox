@@ -1,12 +1,15 @@
 package com.pjb.sandbox.persistence.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -19,6 +22,9 @@ public class Event implements Serializable {
 
 	private Long id;
 	private String description;
+	
+	private Set<EventDestination> eventDestinations;
+	private Set<Market> markets;
 
 	@Id
 	@GeneratedValue(generator="event_seq_gen", strategy=GenerationType.SEQUENCE)
@@ -37,5 +43,23 @@ public class Event implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "event")
+	public Set<EventDestination> getEventDestinations() {
+		return eventDestinations;
+	}
+	
+	public void setEventDestinations(Set<EventDestination> eventDestinations) {
+		this.eventDestinations = eventDestinations;
+	}
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "event")	
+	public Set<Market> getMarkets() {
+		return markets;
+	}
+	
+	public void setMarkets(Set<Market> markets) {
+		this.markets = markets;
 	}
 }

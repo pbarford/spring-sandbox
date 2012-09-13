@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -51,6 +52,24 @@ public abstract class AbstractDao<E extends Serializable, K extends Serializable
 	public void delete(K id) {
 		E entity = getById(id);		
 		getEntityManager().remove(entity);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public E querySingle(String sql, Object ...params) {
+		
+		Query q = getEntityManager().createQuery(sql);
+		
+		//TypedQuery<E> q = getEntityManager().createQuery(sql, getGenericType());
+		
+		for(int i=0; i < params.length; i++) {
+			q.setParameter(i+1, params[i]);
+		}
+		try {
+			return (E) q.getSingleResult();
+		}
+		catch(NoResultException nrex) {
+			return null;
+		}
 	}
 
 	@SuppressWarnings("unchecked")

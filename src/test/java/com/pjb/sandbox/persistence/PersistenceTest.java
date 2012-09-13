@@ -1,16 +1,12 @@
 package com.pjb.sandbox.persistence;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
-
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,5 +72,7 @@ public class PersistenceTest {
 		assertThat(eventDao.getAll().size(), equalTo(3));
 		Collection<Event> res = eventDao.query("from Event e where e.description like ?1", "test%");
 		assertThat(res.size(), equalTo(2));
+		
+		eventDao.loadAll(Long.valueOf(1));
 	}
 }

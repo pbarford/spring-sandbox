@@ -5,9 +5,16 @@
 	<persistence-unit name="sandboxPU" transaction-type="RESOURCE_LOCAL">
 		<class>com.pjb.sandbox.persistence.model.User</class>
 		<class>com.pjb.sandbox.persistence.model.Event</class>
+		<class>com.pjb.sandbox.persistence.model.EventDestination</class>
+		<class>com.pjb.sandbox.persistence.model.Market</class>
+		<class>com.pjb.sandbox.persistence.model.MarketDestination</class>
+		<class>com.pjb.sandbox.persistence.model.Selection</class>
+		<class>com.pjb.sandbox.persistence.model.SelectionDestination</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"></property>            
 			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.format_sql" value="true"/>
 		</properties>
 	</persistence-unit>
 </persistence>

@@ -21,11 +21,8 @@
     
     <aop:config>
     	<aop:aspect ref="magician">
-    		<aop:pointcut id="thinking" 
-    				expression="execution(* com.pjb.sandbox.aop.Thinker.think(String)) and args(thought)"/>
-    		
-    		<aop:before method="interceptThought" pointcut-ref="thinking" arg-names="thought"/>
-    		
+    		<aop:pointcut id="thinking" expression="execution(* com.pjb.sandbox.aop.Thinker.think(String)) and args(thought)"/>
+    		<aop:before method="interceptThought" pointcut-ref="thinking" arg-names="thought"/>    		
     	</aop:aspect>
     </aop:config>
     
