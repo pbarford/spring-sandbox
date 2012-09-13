@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "selection_destination")
-@SequenceGenerator(sequenceName="selection_dest_seq", name="selection_dest_seq_gen", allocationSize=10)
+@SequenceGenerator(sequenceName="selection_dest_seq", name="selection_dest_seq_gen", allocationSize=500)
 public class SelectionDestination implements Serializable {
 
 	private static final long serialVersionUID = 8575662638229096430L;

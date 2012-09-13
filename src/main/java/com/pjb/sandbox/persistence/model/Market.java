@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "market")
-@SequenceGenerator(sequenceName="market_seq", name="market_seq_gen", allocationSize=10)
+@SequenceGenerator(sequenceName="market_seq", name="market_seq_gen", allocationSize=150)
 public class Market implements Serializable {
 
 	private static final long serialVersionUID = -5022872175625655635L;
