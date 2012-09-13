@@ -66,7 +66,7 @@ public class Market implements Serializable {
 		this.event = event;
 	}
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy = "market", cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "market", cascade=CascadeType.PERSIST)
 	public Set<MarketDestination> getMarketDestinations() {
 		return marketDestinations;
 	}
@@ -75,7 +75,7 @@ public class Market implements Serializable {
 		this.marketDestinations = marketDestinations;
 	}
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy = "market", cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "market", cascade=CascadeType.PERSIST)
 	public Set<Selection> getSelections() {
 		return selections;
 	}

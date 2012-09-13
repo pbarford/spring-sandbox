@@ -64,7 +64,7 @@ public class Selection implements Serializable {
 		this.market = market;
 	}
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy = "selection", cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "selection", cascade=CascadeType.PERSIST)
 	public Set<SelectionDestination> getSelectionDestinations() {
 		return selectionDestinations;
 	}
