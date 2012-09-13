@@ -53,7 +53,7 @@ public class Event implements Serializable {
 		this.description = description;
 	}
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy = "event", cascade=CascadeType.PERSIST)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "event", cascade=CascadeType.ALL)
 	public Set<EventDestination> getEventDestinations() {
 		return eventDestinations;
 	}
@@ -62,7 +62,7 @@ public class Event implements Serializable {
 		this.eventDestinations = eventDestinations;
 	}
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy = "event", cascade=CascadeType.PERSIST)	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "event", cascade=CascadeType.ALL)	
 	public Set<Market> getMarkets() {
 		return markets;
 	}
