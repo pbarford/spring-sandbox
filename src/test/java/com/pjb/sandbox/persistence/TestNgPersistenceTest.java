@@ -21,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.pjb.sandbox.builders.UserBuilder;
 import com.pjb.sandbox.persistence.dao.EventDao;
+import com.pjb.sandbox.persistence.dao.UserDao;
 import com.pjb.sandbox.persistence.model.Event;
 import com.pjb.sandbox.persistence.model.EventDestination;
 import com.pjb.sandbox.persistence.model.Market;
@@ -33,16 +35,19 @@ import com.pjb.sandbox.persistence.model.SelectionDestination;
 public class TestNgPersistenceTest extends AbstractTestNGSpringContextTests {
 
 	private static final int DEST_COUNT = 8;
-	private static final int SELECTION_COUNT = 100;
-	private static final int MARKET_COUNT = 10;
+	private static final int SELECTION_COUNT = 20;
+	private static final int MARKET_COUNT = 1;
 
 	@Autowired
 	private EventDao eventDao;
 	
+	@Autowired
+	private UserDao userDao;
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	@BeforeMethod
+	@BeforeMethod(groups={"event"})
 	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED)
 	public void init() {
 		
@@ -88,7 +93,7 @@ public class TestNgPersistenceTest extends AbstractTestNGSpringContextTests {
 		return session.getSessionFactory().getStatistics();
 	}
 	
-	@Test
+	@Test(groups={"event"})
 	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, readOnly=true)
 	public void testQuery() {
 		Event e = eventDao.loadAll(Long.valueOf(10));
@@ -108,5 +113,13 @@ public class TestNgPersistenceTest extends AbstractTestNGSpringContextTests {
 		assertThat(e.getDescription(), equalTo("event-1"));
 		assertThat(e.getEventDestinations().size(), equalTo(DEST_COUNT));
 		assertThat(e.getMarkets().size(), equalTo(MARKET_COUNT));	
+	}
+	
+	@Test(groups={"user"})
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, readOnly=true)
+	public void testAddUser() {
+		userDao.persist(UserBuilder.newUser().withName("Paulo").withAge(38).build());
+		userDao.persist(UserBuilder.newUser().withName("Anita").withAge(43).build());
+		userDao.persist(UserBuilder.newUser().withName("Alexandra").withAge(6).build());
 	}
 }
