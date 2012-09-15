@@ -23,8 +23,8 @@ public class EventBuilder {
 	}
 	
 	public static interface EventDestinationStep {
-		EventDestinationStep addEventDestination(String desc);
-		MarketStep addMarket();
+		EventDestinationStep andEventDestination(String desc);
+		MarketStep andMarket();
 		
 	}
 	
@@ -33,8 +33,8 @@ public class EventBuilder {
 	}
 	
 	public static interface MarketDestinationStep {		
-		MarketDestinationStep addMarketDestination(String desc);
-		SelectionStep addSelection();
+		MarketDestinationStep andMarketDestination(String desc);
+		SelectionStep andSelection();
 	}
 	
 	public static interface SelectionStep {
@@ -43,8 +43,8 @@ public class EventBuilder {
 	}
 	
 	public static interface SelectionDestinationStep {
-		SelectionDestinationStep addSelectionDestination(String desc);
-		MarketStep nextMarket();
+		SelectionDestinationStep andSelectionDestination(String desc);
+		MarketStep andAnotherMarket();
 		Event build();
 		
 	}
@@ -63,11 +63,11 @@ public class EventBuilder {
 			return this;
 		}
 		
-		public EventDestinationStep addEventDestination(String desc) {
+		public EventDestinationStep andEventDestination(String desc) {
 			return this;
 		}
 
-		public MarketStep addMarket() {
+		public MarketStep andMarket() {
 			currentMarket = new Market();
 			currentMarket.setEvent(event);
 			currentMarket.setMarketDestinations(new HashSet<MarketDestination>());
@@ -81,7 +81,7 @@ public class EventBuilder {
 			return this;
 		}
 
-		public MarketDestinationStep addMarketDestination(String desc) {
+		public MarketDestinationStep andMarketDestination(String desc) {
 			MarketDestination dest = new MarketDestination();
 			dest.setMarket(currentMarket);
 			dest.setDescription(desc);
@@ -89,7 +89,7 @@ public class EventBuilder {
 			return this;
 		}
 
-		public SelectionStep addSelection() {
+		public SelectionStep andSelection() {
 			currentSelection = new Selection();
 			currentSelection.setMarket(currentMarket);
 			currentSelection.setSelectionDestinations(new HashSet<SelectionDestination>());
@@ -101,7 +101,7 @@ public class EventBuilder {
 			return this;
 		}
 		
-		public SelectionDestinationStep addSelectionDestination(String desc) {
+		public SelectionDestinationStep andSelectionDestination(String desc) {
 			SelectionDestination dest = new SelectionDestination();
 			dest.setSelection(currentSelection);
 			dest.setDescription(desc);
@@ -109,8 +109,8 @@ public class EventBuilder {
 			return this;
 		}
 		
-		public MarketStep nextMarket() {
-			return addMarket();
+		public MarketStep andAnotherMarket() {
+			return andMarket();
 		}
 		
 		public Event build() {
