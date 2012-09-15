@@ -52,15 +52,15 @@ public class EventBuilder {
 	
 	private static class EventSteps implements DescriptionStep, EventDestinationStep, MarketStep, MarketDestinationStep, SelectionStep, SelectionDestinationStep {
 		
-		private Event event;
+		private Event theEvent;
 		private Market currentMarket;
 		private Selection currentSelection;
 		
 		public EventDestinationStep withEventDescription(String desc) {
-			event = new Event();
-			event.setDescription(desc);
-			event.setEventDestinations(new HashSet<EventDestination>());
-			event.setMarkets(new HashSet<Market>());
+			theEvent = new Event();
+			theEvent.setDescription(desc);
+			theEvent.setEventDestinations(new HashSet<EventDestination>());
+			theEvent.setMarkets(new HashSet<Market>());
 			return this;
 		}
 		
@@ -70,10 +70,10 @@ public class EventBuilder {
 
 		public MarketStep andMarket() {
 			currentMarket = new Market();
-			currentMarket.setEvent(event);
+			currentMarket.setEvent(theEvent);
 			currentMarket.setMarketDestinations(new HashSet<MarketDestination>());
 			currentMarket.setSelections(new HashSet<Selection>());
-			event.getMarkets().add(currentMarket);
+			theEvent.getMarkets().add(currentMarket);
 			return this;
 		}
 
@@ -120,7 +120,7 @@ public class EventBuilder {
 		}
 		
 		public Event build() {
-			return event;
+			return theEvent;
 		}
 			
 	}
