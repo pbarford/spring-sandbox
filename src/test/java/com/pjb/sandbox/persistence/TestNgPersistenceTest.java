@@ -3,6 +3,7 @@ package com.pjb.sandbox.persistence;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 import java.util.HashSet;
 
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.pjb.sandbox.builders.EventBuilder;
 import com.pjb.sandbox.builders.UserBuilder;
 import com.pjb.sandbox.persistence.dao.EventDao;
 import com.pjb.sandbox.persistence.dao.UserDao;
@@ -47,7 +49,7 @@ public class TestNgPersistenceTest extends AbstractTestNGSpringContextTests {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	@BeforeMethod(groups={"event"})
+	@BeforeMethod(groups={"query"})
 	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED)
 	public void init() {
 		
@@ -83,6 +85,7 @@ public class TestNgPersistenceTest extends AbstractTestNGSpringContextTests {
 			}
 			e.getMarkets().add(m);
 		}
+		
 		eventDao.persist(e);		
 		System.out.println("*********** getEntityInsertCount : " + getStats().getEntityInsertCount());
 		
@@ -93,7 +96,7 @@ public class TestNgPersistenceTest extends AbstractTestNGSpringContextTests {
 		return session.getSessionFactory().getStatistics();
 	}
 	
-	@Test(groups={"event"})
+	@Test(groups={"query"})
 	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, readOnly=true)
 	public void testQuery() {
 		Event e = eventDao.loadAll(Long.valueOf(10));
@@ -121,5 +124,33 @@ public class TestNgPersistenceTest extends AbstractTestNGSpringContextTests {
 		userDao.persist(UserBuilder.newUser().withName("Paulo").withAge(38).build());
 		userDao.persist(UserBuilder.newUser().withName("Anita").withAge(43).build());
 		userDao.persist(UserBuilder.newUser().withName("Alexandra").withAge(6).build());
+	}
+	
+	@Test
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, readOnly=true)
+	public void testEventBuilder() {
+		Event e = EventBuilder.newEvent()
+				.withEventDescription("event-1")
+					.addEventDestination("e-dest-1")
+					.addEventDestination("e-dest-1")
+					.addMarket().withMarketDescription("market-1")
+						.addMarketDestination("m-dest-1")
+						.addMarketDestination("m-dest-2")
+						.addSelection()
+							.withSelectionDescription("selection-1")
+							.addSelectionDestination("s-dest-1")
+							.addSelectionDestination("s-dest-2")
+					.nextMarket().withMarketDescription("market-2")
+						.addMarketDestination("m-dest-2")
+							.addMarketDestination("m-dest-2")
+							.addSelection()
+								.withSelectionDescription("selection-2")
+								.addSelectionDestination("s-dest-1")
+								.addSelectionDestination("s-dest-2")
+				.build();
+		
+		eventDao.persist(e);
+		
+		assertThat(e.getId(), notNullValue());
 	}
 }
