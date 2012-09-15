@@ -118,7 +118,7 @@ public class TestNgPersistenceTest extends AbstractTestNGSpringContextTests {
 		assertThat(e.getMarkets().size(), equalTo(MARKET_COUNT));	
 	}
 	
-	@Test(groups={"user"})
+	@Test(groups={"user", "builders"})
 	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, readOnly=true)
 	public void testAddUser() {
 		userDao.persist(UserBuilder.newUser().withName("Paulo").withAge(38).build());
