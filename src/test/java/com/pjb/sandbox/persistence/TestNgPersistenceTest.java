@@ -126,9 +126,10 @@ public class TestNgPersistenceTest extends AbstractTestNGSpringContextTests {
 		userDao.persist(UserBuilder.newUser().withName("Alexandra").withAge(6).build());
 	}
 	
-	@Test
+	@Test(groups={"builders"})
 	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, readOnly=true)
 	public void testEventBuilder() {
+		
 		Event e = EventBuilder.newEvent()
 				.withEventDescription("event-1")
 					.andEventDestination("e-dest-1")
@@ -143,10 +144,17 @@ public class TestNgPersistenceTest extends AbstractTestNGSpringContextTests {
 					.andAnotherMarket().withMarketDescription("market-2")
 						.andMarketDestination("m-dest-2")
 						.andMarketDestination("m-dest-2")
+						.andMarketDestination("m-dest-3")
+						.andMarketDestination("m-dest-3")
 						.andSelection()
 							.withSelectionDescription("selection-2")
 							.andSelectionDestination("s-dest-1")
 							.andSelectionDestination("s-dest-2")
+						.andAnotherSelection()
+							.withSelectionDescription("selection-3")
+							.andSelectionDestination("s-dest-5")
+							.andSelectionDestination("s-dest-6")
+							.andSelectionDestination("s-dest-7")
 				.build();
 		
 		eventDao.persist(e);
