@@ -42,6 +42,12 @@ public class MongoPersistenceTest extends AbstractTestNGSpringContextTests {
 		assertThat(res.size(), equalTo(1));
 		res = userDao.query().execute();
 		assertThat(res.size(), equalTo(3));
+		
+		res = userDao.query().withName("paulo").withAge(12).execute();
+		assertThat(res.size(), equalTo(0));
+		
+		res = userDao.query().withName("paulo").withAge(38).execute();
+		assertThat(res.size(), equalTo(1));
 	}
 	
 	@AfterMethod(groups="mongo")
