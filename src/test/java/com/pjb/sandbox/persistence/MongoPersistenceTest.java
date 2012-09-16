@@ -38,15 +38,15 @@ public class MongoPersistenceTest extends AbstractTestNGSpringContextTests {
 	
 	@Test(groups="mongo")
 	public void userQueryTest() {		
-		List<User> res = userDao.query().withName("paulo").execute();	
+		List<User> res = userDao.query().withNameEqualTo("paulo").execute();	
 		assertThat(res.size(), equalTo(1));
 		res = userDao.query().execute();
 		assertThat(res.size(), equalTo(3));
 		
-		res = userDao.query().withName("paulo").withAge(12).execute();
+		res = userDao.query().withNameEqualTo("paulo").withAgeEqualTo(12).execute();
 		assertThat(res.size(), equalTo(0));
 		
-		res = userDao.query().withName("paulo").withAge(38).execute();
+		res = userDao.query().withNameEqualTo("paulo").withAgeEqualTo(38).execute();
 		assertThat(res.size(), equalTo(1));
 	}
 	

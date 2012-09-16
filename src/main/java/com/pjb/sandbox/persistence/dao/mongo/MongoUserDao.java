@@ -27,33 +27,30 @@ public class MongoUserDao implements UserDao{
 	}
 	
 	public static interface UserQuery {
-		UserQuery withName(String name);
-		UserQuery withAge(Integer age);
+		UserQuery withNameEqualTo(String name);
+		UserQuery withAgeEqualTo(Integer age);
 		List<User> execute();
 	}
 	
-	private class MongoUserQuery implements UserQuery {
-		private String name;
-		private Integer age;
+	private class MongoUserQuery implements UserQuery {		
 		private MongoOperations mongoOperations;
+		private Query theQuery;
 		
 		public MongoUserQuery(MongoOperations mongoOperations) {
+			theQuery = new Query();
 			this.mongoOperations = mongoOperations;
 		}
 		
-		public UserQuery withName(String name) {
-			this.name = name;
+		public UserQuery withNameEqualTo(String name) {
+			theQuery.addCriteria(Criteria.where("name").is(name));
 			return this;
 		}
-		public UserQuery withAge(Integer age) {
-			this.age = age;
+		public UserQuery withAgeEqualTo(Integer age) {			
+			theQuery.addCriteria(Criteria.where("age").is(age));
 			return this;
 		}
 		public List<User> execute() {
-			Query q = new Query();
-			if(name!=null) q.addCriteria(Criteria.where("name").is(name));
-			if(age!=null) q.addCriteria(Criteria.where("age").is(age));
-			return mongoOperations.find(q, User.class,"users");
+			return mongoOperations.find(theQuery, User.class,"users");
 		}
 		
 	}
