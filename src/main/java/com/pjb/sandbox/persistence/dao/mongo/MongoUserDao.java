@@ -17,9 +17,9 @@ public class MongoUserDao implements UserDao{
 	@Autowired
 	private MongoOperations mongoOperations;
 	
-	public User persist(User entity) {
-		mongoOperations.save(entity, "users");
-		return entity;
+	public User persist(User user) {
+		mongoOperations.save(user, "users");
+		return user;
 	}
 	
 	public UserQuery query() {
@@ -42,7 +42,7 @@ public class MongoUserDao implements UserDao{
 		}
 		
 		public UserQuery withNameEqualTo(String name) {
-			theQuery.addCriteria(Criteria.where("name").is(name));
+			theQuery.addCriteria(Criteria.where("name").is(name));			
 			return this;
 		}
 		public UserQuery withAgeEqualTo(Integer age) {			
