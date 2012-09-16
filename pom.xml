@@ -10,6 +10,7 @@
 
 	<properties>
 		<org.springframework.version>3.0.6.RELEASE</org.springframework.version>
+		<spring.data.version>1.0.4.RELEASE</spring.data.version>
 	</properties>
 
 	<dependencies>
@@ -95,6 +96,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>${spring.data.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.9.1</version>
+		</dependency>
+
+		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
 			<version>1.0</version>
@@ -164,14 +177,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.6</version>
-				<!-- 
-				<configuration>
-					<forkMode>pertest</forkMode>
-					<argLine>-Xms256m -Xmx2048m</argLine>
-					<testFailureIgnore>false</testFailureIgnore>
-					<skip>false</skip>					
-				</configuration>
-				-->
+				<!-- <configuration> <forkMode>pertest</forkMode> <argLine>-Xms256m -Xmx2048m</argLine> 
+					<testFailureIgnore>false</testFailureIgnore> <skip>false</skip> </configuration> -->
 			</plugin>
 		</plugins>
 
