@@ -24,6 +24,7 @@ import org.testng.annotations.Test;
 import com.pjb.sandbox.builders.EventBuilder;
 import com.pjb.sandbox.builders.UserBuilder;
 import com.pjb.sandbox.persistence.dao.EventDao;
+import com.pjb.sandbox.persistence.dao.JpqlBuilder;
 import com.pjb.sandbox.persistence.dao.UserDao;
 import com.pjb.sandbox.persistence.model.Event;
 import com.pjb.sandbox.persistence.model.EventDestination;
@@ -120,9 +121,14 @@ public class TestNgPersistenceTest extends AbstractTestNGSpringContextTests {
 	@Test(groups={"user", "builders"})
 	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, readOnly=true)
 	public void testAddUser() {
+		
 		userDao.persist(UserBuilder.newUser().withName("Paulo").withAge(38).build());
 		userDao.persist(UserBuilder.newUser().withName("Anita").withAge(43).build());
 		userDao.persist(UserBuilder.newUser().withName("Alexandra").withAge(6).build());
+		
+		String sql = JpqlBuilder.create().select("u").from("User u").where("u.name='Paulo'").toString();
+		assertThat(userDao.query(sql).size(), equalTo(1));
+		
 	}
 	
 	@Test(groups={"builders"})

@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pjb.sandbox.persistence.dao.EventDao;
+import com.pjb.sandbox.persistence.dao.JpqlBuilder;
 import com.pjb.sandbox.persistence.dao.UserDao;
 import com.pjb.sandbox.persistence.model.Event;
 import com.pjb.sandbox.persistence.model.User;
